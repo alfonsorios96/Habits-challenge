@@ -1,10 +1,9 @@
 const Country = require('../models/country');
 const {ObjectId} = require('mongodb');
-const {datesUtils} = require('../utils');
 
 const read = async () => await Country.find({});
 
-const create = async (name, iso_code, number_code, created_date, updated_date) => {
+const create = async (name, iso_code, number_code) => {
     const new_country = {};
     if (name && name !== '') {
         new_country.name = name;
@@ -15,24 +14,20 @@ const create = async (name, iso_code, number_code, created_date, updated_date) =
     if (number_code && number_code !== 0) {
         new_country.number_code = number_code;
     }
-    if (created_date && datesUtils.isDate(created_date)) {
-        new_country.created_date = new Date(created_date);
-    }
-    if (updated_date && datesUtils.isDate(updated_date)) {
-        new_country.updated_date = new Date(updated_date);
-    }
+    new_country.created_date = new Date();
+    new_country.updated_date = new Date();
     const country = new Country(new_country);
-    const payload = await country.save();
     try {
+        const payload = await country.save();
         if (payload) {
             return payload;
         }
-    } catch (e) {
-        // Catch exceptions
+    } catch (error) {
+        return error;
     }
 };
 
-const update = async (uid, name, iso_code, number_code, created_date, updated_date) => {
+const update = async (uid, name, iso_code, number_code) => {
     const current_country = await Country.findById(uid);
     const country_updated = {};
     if (name && name !== '') {
@@ -44,14 +39,9 @@ const update = async (uid, name, iso_code, number_code, created_date, updated_da
     if (number_code && number_code !== 0) {
         country_updated.number_code = number_code;
     }
-    if (created_date && datesUtils.isDate(created_date)) {
-        country_updated.created_date = new Date(created_date);
-    }
-    if (updated_date && datesUtils.isDate(updated_date)) {
-        country_updated.updated_date = new Date(updated_date);
-    }
+    country_updated.updated_date = new Date();
     try {
-        const payload = await Country.update(
+        const payload = await Country.updateOne(
             {'_id': ObjectId(uid)},
             {
                 $set: {
@@ -63,22 +53,17 @@ const update = async (uid, name, iso_code, number_code, created_date, updated_da
                 }
             }
         );
-        if (payload) {
-            return payload;
-        }
-    } catch (e) {
-        // Catch exceptions
+        return payload;
+    } catch (error) {
+        return error;
     }
 };
 
 const remove = async (uid) => {
     try {
-        const payload = await Country.findByIdAndDelete(uid);
-        if (payload) {
-            return payload;
-        }
-    } catch (e) {
-        // Catch exceptions
+        return await Country.findByIdAndDelete(uid);
+    } catch (error) {
+        return error;
     }
 };
 

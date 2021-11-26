@@ -7,9 +7,11 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 app.use(cors());
+app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 const services = require('./services');
+const auth_middleware = require('./middlewares/auth');
 
 const api = express.Router();
 
@@ -18,6 +20,7 @@ auth.post('/', services.auth.login);
 api.use('/auth', auth);
 
 const countries = express.Router();
+countries.use(auth_middleware.authorize);
 countries.get('/', services.countries.getAll);
 countries.post('/', services.countries.create);
 countries.put('/:uid', services.countries.update);

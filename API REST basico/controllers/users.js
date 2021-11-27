@@ -1,6 +1,7 @@
 const User = require('../models/user');
 const Country = require('../models/country');
 const {ObjectId} = require('mongodb');
+const bcrypt = require('bcryptjs');
 
 const read = async () => {
     return await User.find().populate('country_code');
@@ -28,8 +29,7 @@ const create = async (name, age, country_code, username, password) => {
         new_user.username = username;
     }
     if (password && password !== '') {
-        // TODO Cifrar clave
-        new_user.password = password;
+        new_user.password = bcrypt.hashSync(password, 10);
     }
     new_user.status = true;
     try {
@@ -60,8 +60,7 @@ const update = async (uid, name, age, status, country_code, username, password) 
         user_updated.username = username;
     }
     if (password && password !== '') {
-        // TODO Cifrar clave
-        user_updated.password = password;
+        user_updated.password = bcrypt.hashSync(password, 10);
     }
     try {
         const country = await Country.findOne({country_code});

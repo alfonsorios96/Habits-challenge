@@ -1,4 +1,4 @@
-db.usersScore.insertMany([{
+db.scores.insertMany([{
   username: ObjectId("61a17b220af1cf9e5e801da8"),
   score: 12,
   date: new Date("2021-10-10"),

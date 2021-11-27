@@ -53,7 +53,7 @@ db.createCollection("users", {
   }
 })
 
-db.createCollection('usersScore', {
+db.createCollection('scores', {
   validator: {
     $jsonSchema: {
       bsonType: "object",

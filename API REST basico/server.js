@@ -38,7 +38,7 @@ users.delete('/:uid', services.users.remove);
 api.use('/users', users);
 
 const scores = express.Router();
-
+scores.use(auth_middleware.authorize);
 scores.get('/', services.scores.getAll);
 scores.post('/', services.scores.create);
 scores.put('/:uid', services.scores.update);

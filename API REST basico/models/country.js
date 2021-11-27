@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const Country = mongoose.model('Country', {
+const Country = mongoose.model('countries', {
     name: {
         type: String,
         required: true

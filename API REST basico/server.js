@@ -29,7 +29,7 @@ countries.delete('/:uid', services.countries.remove);
 api.use('/countries', countries);
 
 const users = express.Router();
-
+users.use(auth_middleware.authorize);
 users.get('/', services.users.getAll);
 users.post('/', services.users.create);
 users.put('/:uid', services.users.update);

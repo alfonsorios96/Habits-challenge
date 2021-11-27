@@ -40,7 +40,7 @@ db.createCollection("users", {
           bsonType: "bool"
         },
         country_code: {
-          bsonType: "object"
+          bsonType: "objectId"
         },
         username: {
           bsonType: "string"
@@ -60,7 +60,7 @@ db.createCollection('usersScore', {
       required: ["username", "score", "date", "status"],
       properties: {
         username: {
-          bsonType: "object"
+          bsonType: "objectId"
         },
         score: {
           bsonType: "int"
